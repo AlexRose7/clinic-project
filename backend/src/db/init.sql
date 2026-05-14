@@ -1,5 +1,7 @@
 -- Схема базы данных медицинской поликлиники
 
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 CREATE TYPE user_role AS ENUM ('patient', 'doctor', 'admin');
 
 CREATE TABLE IF NOT EXISTS users (

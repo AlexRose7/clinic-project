@@ -5,6 +5,7 @@ import { pool } from './db/pool';
 import authRouter from './routes/auth';
 import appointmentsRouter from './routes/appointments';
 import doctorsRouter from './routes/doctors';
+import { demoCredentials, seedDemoData } from './db/seed';
 
 dotenv.config();
 
@@ -38,6 +39,19 @@ app.use((_req, res) => {
   res.status(404).json({ error: 'Not found' });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Backend запущен на http://localhost:${PORT}`);
-});
+async function start() {
+  try {
+    await pool.query('SELECT 1');
+    await seedDemoData();
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Backend запущен на http://localhost:${PORT}`);
+      console.log(`🧪 Demo patient: ${demoCredentials.email} / ${demoCredentials.password}`);
+    });
+  } catch (error) {
+    console.error('Не удалось запустить backend:', error);
+    process.exit(1);
+  }
+}
+
+void start();

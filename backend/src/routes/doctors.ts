@@ -7,8 +7,13 @@ const router = Router();
 router.get('/', async (_req: Request, res: Response) => {
   try {
     const result = await pool.query(`
-      SELECT u.id, u.first_name, u.last_name, u.email,
-             s.name AS specialization, d.experience_years
+      SELECT u.id,
+             u.first_name AS "firstName",
+             u.last_name AS "lastName",
+             u.email,
+             s.name AS specialization,
+             d.bio,
+             d.experience_years AS "experienceYears"
       FROM users u
       JOIN doctors d ON d.id = u.id
       LEFT JOIN specializations s ON s.id = d.specialization_id
